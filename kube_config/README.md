@@ -180,29 +180,8 @@ vfio_virqfd
 ## 6# VLAN Aware
 
 ![VLAN Aware checkbox on](image.png)
-s
-## 7# NFS Skipped
-- - - - -
-## Description
-Briefly describe what the project does and its purpose.
 
-## Getting Started
-Instructions on setting up the project locally.
+# Cluster setup and installation
+## 1# Installing kubeadm
 
-### Prerequisites
-List any software or dependencies required.
-
-### Installation
-Detailed installation steps.
-
-## Usage
-Examples of how to use the project.
-
-## Contributing
-Guidelines for contributing to the project.
-
-## License
-Information about the project's license.
-
-## Contact
-How to get in touch with the project maintainers.
+`testing ---`
