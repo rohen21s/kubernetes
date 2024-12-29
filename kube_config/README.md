@@ -181,9 +181,8 @@ vfio_virqfd
 
 ![VLAN Aware checkbox on](image.png)
 
-# Cluster setup and installation
-
-## 1# Preparing machines
+# Virtual Machine preparations
+## 1# Preparing machines #PART1
 
 Requirementes before begin :
 
@@ -214,7 +213,6 @@ auto ens18
 iface ens18 inet static
         address 192.168.1.132/24
         gateway 192.168.1.1
-        netmask 255.255.255.0
         nameserver 8.8.8.8
         nameserver 8.8.4.4
         nameserver 1.1.1.1      
@@ -222,8 +220,22 @@ iface ens18 inet static
 source /etc/network/interfaces.d/*
 ``` 
 
+## 2#  Preparing machines #PART2
 
-## 2# (Optional) Fancy terminal
+[Prerequisites]
+- Check UUID are unique with `sudo cat /sys/class/dmi/id/product_uuid`
+- Check if swap is in use, To disable swap, sudo `swapoff -a` can be used to disable swapping **temporarily**.
+- Reload system configurations, `sudo systemctl daemon-reload` and optionally reboot to ensure the changes take effect `sudo reboot`.
+- Verify Swap Disabled `free -h` (The swap line should show 0 total, 0 used, and 0 free).
+- Method to permanently disable Swap
+- Edit the /etc/fstab file using a text editor like sudo vi /etc/fstab or sudo nano /etc/fstab.
+- Comment out the swap partition or file by adding a # symbol at the beginning of the line. For example:
+  `# /dev/mapper/rl-swap     none                    swap    defaults        0 0`
+- Save the changes and exit the editor.
+
+
+
+## 3# (Optional) Fancy terminal
 
 Contents:
 
@@ -280,7 +292,5 @@ This time looking for `ZSH_THEME="robbyrussell"` change it to `ZSH_THEME="powerl
 
 `nano ~/.zshrc` and add plugin `zsh-interactive-cd)`
 
-
-## 3# (Master) Installing kubeadm
-
-
+# Cluster setup and component installation
+## 1# (All Nodes) Installing containeruntime, kubeadm, kubelet and kubectl.
