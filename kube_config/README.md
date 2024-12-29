@@ -182,6 +182,37 @@ vfio_virqfd
 ![VLAN Aware checkbox on](image.png)
 
 # Cluster setup and installation
-## 1# Installing kubeadm
 
-`testing ---`
+## Preparing machines
+
+- 1 VM debian or ubuntu for master node
+- 2 VMs debian or ubuntu for worker nodes
+
+40 Gb storage 2Gb RAM good to go, 
+
+- Quick checking of your assigned IPs by your home LAN network DHCP, with `ifconfig` or `ip a`
+
+Install `net-tools` and `ifupdown`
+
+```
+$ sudo apt update
+$ sudo apt install ifupdown net-tools
+```
+   
+- To be able to fix that assigned IP to the machine configuration in case the DHCP lease a new IP.
+
+
+## (OPTIONAL) Fancy terminal
+
+`apt install zsh`
+
+`echo $0`
+
+`chsh`
+
+`/bin/zsh`
+
+reboot
+
+
+## 1# Installing kubeadm
