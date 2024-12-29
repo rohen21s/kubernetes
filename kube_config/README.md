@@ -225,14 +225,62 @@ source /etc/network/interfaces.d/*
 
 ## 2# (Optional) Fancy terminal
 
+Contents:
+
+[OhMyZsh](https://github.com/ohmyzsh/ohmyzsh)
+
+[zsh-autosuggestionis](https://github.com/zsh-users/zsh-autosuggestions)
+
+[zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
+
+[zsh-interactive-cd](https://github.com/mrjohannchang/zsh-interactive-cd)
+
+[More OhMyZsh zsh plugins](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins)
+
+[powerlevel10k](https://github.com/romkatv/powerlevel10k)
+
+
 `apt install zsh`
 
-`echo $0`
+`zsh`
 
-`chsh`
+- From https://github.com/ohmyzsh/ohmyzsh install ohmyzsh:
 
-`/bin/zsh`
+`sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"`
 
-reboot
+- From https://github.com/zsh-users/zsh-autosuggestions  -> https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md
+
+- Find the distribution you are using and download for example for Ubuntu 22:
+
+```
+echo 'deb http://download.opensuse.org/repositories/shells:/zsh-users:/zsh-autosuggestions/xUbuntu_22.04/ /' | sudo tee /etc/apt/sources.list.d/shells:zsh-users:zsh-autosuggestions.list
+curl -fsSL https://download.opensuse.org/repositories/shells:zsh-users:zsh-autosuggestions/xUbuntu_22.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/shells_zsh-users_zsh-autosuggestions.gpg > /dev/null
+sudo apt update
+sudo apt install zsh-autosuggestions
+```
+
+`nano ~/.zshrc`
+
+- Inside we must contain a line with `plugins=(git)` we will edit it to this `plugins=(git zsh-autosuggestions)`.
+
+`git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting`
+
+`nano ~/.zshrc ` add this time `plugins=(git zsh-autosuggestions zsh-syntax-highlighting)`
+
+- Oh My Zsh - Clone the repository:
+
+`git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k`
+
+`nano ~/.zshrc`
+
+This time looking for `ZSH_THEME="robbyrussell"` change it to `ZSH_THEME="powerlevel10k/powerlevel10k"`
+
+
+`sudo apt install fzf  `
+
+`nano ~/.zshrc` and add plugin `zsh-interactive-cd)`
+
 
 ## 3# (Master) Installing kubeadm
+
+
