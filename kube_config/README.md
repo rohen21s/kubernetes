@@ -183,26 +183,47 @@ vfio_virqfd
 
 # Cluster setup and installation
 
-## Preparing machines
+## 1# Preparing machines
+
+Requirementes before begin :
 
 - 1 VM debian or ubuntu for master node
 - 2 VMs debian or ubuntu for worker nodes
+- 40 Gb storage 2Gb RAM good to go
 
-40 Gb storage 2Gb RAM good to go, 
+Steps: 
 
-- Quick checking of your assigned IPs by your home LAN network DHCP, with `ifconfig` or `ip a`
-
-Install `net-tools` and `ifupdown`
+- Check your leased and assigned IPs by your home LAN network DHCP, with `ifconfig` or `ip a` to utilize the mentioned commands install; `net-tools` and `ifupdown`
 
 ```
-$ sudo apt update
-$ sudo apt install ifupdown net-tools
+ sudo apt update
+ 
+ sudo apt install ifupdown net-tools
+ 
+ ip a
 ```
-   
-- To be able to fix that assigned IP to the machine configuration in case the DHCP lease a new IP.
+Note: (copy or write down the assigned IPv4 for the next step)
+
+- To be able to make sure that the newly assigned IP to the machine configuration is fixated on the machine, we will edit `/etc/network/interfaces` file as in the example below; we do that just in case our Home DHCP lease a new IP and tries to change it.
+
+```sh
+# interfaces(5) file used by ifup(8) and ifdown(8)
+# Include files from /etc/network/interfaces.d:
+
+auto ens18 
+iface ens18 inet static
+        address 192.168.1.132/24
+        gateway 192.168.1.1
+        netmask 255.255.255.0
+        nameserver 8.8.8.8
+        nameserver 8.8.4.4
+        nameserver 1.1.1.1      
+
+source /etc/network/interfaces.d/*
+```
 
 
-## (OPTIONAL) Fancy terminal
+## 2# (Optional) Fancy terminal
 
 `apt install zsh`
 
@@ -214,6 +235,4 @@ $ sudo apt install ifupdown net-tools
 
 reboot
 
-`commit test123`
-
-## 1# Installing kubeadm
+## 3# (Master) Installing kubeadm
