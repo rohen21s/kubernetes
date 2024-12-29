@@ -220,7 +220,7 @@ iface ens18 inet static
         nameserver 1.1.1.1      
 
 source /etc/network/interfaces.d/*
-```
+``` 
 
 
 ## 2# (Optional) Fancy terminal
