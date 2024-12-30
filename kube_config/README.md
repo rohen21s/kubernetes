@@ -232,7 +232,28 @@ source /etc/network/interfaces.d/*
 - Comment out the swap partition or file by adding a # symbol at the beginning of the line. For example:
   `# /dev/mapper/rl-swap     none                    swap    defaults        0 0`
 - Save the changes and exit the editor.
-
+- `sudo apt install qemu-guest-agent`
+- `sudo apt update` `sudo apt upgrade`
+- `sudo nano /etc/netplan/50-cloud-init.yaml` with the following content
+```yaml
+# This file is generated from information provided by the datasource.  Changes
+# to it will not persist across an instance reboot.  To disable cloud-init's
+# network configuration capabilities, write a file
+# /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg with the following:
+# network: {config: disabled}
+network:
+    version: 2
+    ethernets:
+        ens18:
+             addresses: [192.168.1.132/24]
+             nameservers: 
+                 addresses: [192.168.1.1]
+             routes:
+                 - to: default
+                   via: 192.168.1.1
+```
+- Make sure we test this with `sudo netplan try` and `ENTER` if no issues.
+- Check hostnames `cat /etc/hosts && cat /etc/hostname`
 
 
 ## 3# (Optional) Fancy terminal
@@ -294,3 +315,13 @@ This time looking for `ZSH_THEME="robbyrussell"` change it to `ZSH_THEME="powerl
 
 # Cluster setup and component installation
 ## 1# (All Nodes) Installing containeruntime, kubeadm, kubelet and kubectl.
+
+- Install containerd on all machines `sudo apt install containerd`
+- Check status on all machines `sudo service containerd status`
+- Create a dir for containerd `sudo mkdir /etc/containerd`
+- Import basic config for containerd `containerd config default | sudo tee /etc/containerd/config.toml` make sure is created `ls -l /etc/containerd`.
+- Change `SystemdCgroup` to `true` in the file `sudo nano /etc/containerd/config.toml`
+- Verify swap is disabled `free -h` in `/etc/fstab` the line with type `swap` must be commented.
+- Enable `net.ipv4.ip_forward=1` in the file `sudo nano /etc/sysctl.conf`.
+- Create a file `/etc/modules-load.d/k8s.conf` add `br_netfilter`
+- Reboot after these changes.
