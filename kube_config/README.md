@@ -160,7 +160,7 @@ ___
 
 ___
 
-# Virtual Machine prepparation
+# Virtual Machine preparation
 ## 1# Preparing machines (basic netw and host config)
 
 Requirements before begin:
