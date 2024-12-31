@@ -101,7 +101,7 @@ ___
 
 ```sh
 # /etc/apt/sources.list     
-                                        
+
 deb http://ftp.es.debian.org/debian bookworm main contrib
 
 deb http://ftp.es.debian.org/debian bookworm-updates main contrib
@@ -129,7 +129,9 @@ ___
 ## 3# Enable IOMMU
 
 - Access to grub file `nano /etc/default/grub`. Comment a line and add the below one, choose if you have `AMD` or `Intel` processor.
-```
+```sh
+# /etc/default/grub
+
 #GRUB_CMDLINE_LINUX_DEFAULT="quiet"
 GRUB_CMDLINE_LINUX_DEFAULT="quiet intel_iommu=on"
 #GRUB_CMDLINE_LINUX_DEFAULT="quiet amd_iommu=on"
@@ -400,7 +402,7 @@ ___
 
 - You are good to go now with the nodes added to the cluster. If you receive `connection refused`, by typing `kubectl` commands, make sure you performed this step:
 - With the following command example, send a copy of your `./kube` folder to all your node machines that will join to the fleet / cluster, this will allow you to use `kubectl` commands from `worker nodes`.
-```
+```sh
 #Copy command ( scp -r <SRC_DIR> <DST_HOST_USER>@<DST_HOST_IP>:<DST_DIR> )
 scp -r .kube/ rohen@192.168.1.133:/home/rohen/.kube
  
