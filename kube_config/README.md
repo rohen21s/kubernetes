@@ -385,8 +385,10 @@ kubectl get pods -A -o wide
 
 > If you face any issues from the provided commands, check their current versions and steps in the [Calico official docmentation](https://docs.tigera.io/calico/latest/getting-started/kubernetes/self-managed-onprem/onpremises).
 
+> [!CAUTION]
+> Flannel is a basic alternative, if you have installed CALICO CNI Plugin successfully already, do not install Flannel.
 
-- Flannel CNI Network plugin installation steps:
+- Flannel CNI Network plugin installation steps / all the commands:
 
 ```sh
 #Apply the Flannel network configuration using the following command:
