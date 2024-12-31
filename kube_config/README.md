@@ -2,10 +2,10 @@
 
 ## Step 1 - Download latest proxmox ISO
 - [Download Latest Proxmox ISO](https://proxmox.com/en/downloads)
-
+___
 ## Step 2 - Boot Proxmox ISO USB
 - [Download RUFUS Portable](https://rufus.ie/es/)
-
+___
 ## Step 3 - Proxmox installation steps
 ### Step 3.1 - Set valid FQDN
 
@@ -14,7 +14,7 @@
 > **[hostname].[domain].[tld]**   
 
 > Similar to the following example: **machine01.example.zyx**
-
+___
 ### Step 3.2 - Select networking interface (enp0s or wifi)
 
 > The shown IPs such as 192.168.100.X are initial basic configured IPs from `/etc/netplan/50..` or `/etc/network/interfaces`, don't worry on the following step we change the network configuration.
@@ -91,7 +91,7 @@ root@proxmonster:~#
 ```
 
 - 1.7.- Verification step `ip a` verify that the IPs haven't been removed, your defined IP is there and stable, finally ping `8.8.8.8` or `google.com`.
-
+___
 
 ## 2# Update proxmox No subscription
 
@@ -123,7 +123,7 @@ deb http://download.proxmox.com/debian/pbs bookworm pbstest
 >`# deb https://enterprise.proxmox.com/debian/ceph-quincy bookworm enterprise`
 
 - 2.4.- `apt-get update && upgrade`
-
+___
 ## 3# Enable IOMMU
 
 - Access to grub file `nano /etc/default/grub`. Comment a line and add the below one, choose if you have `AMD` or `Intel` processor.
@@ -151,7 +151,7 @@ vfio_iommu_type1
 vfio_pci
 vfio_virqfd
 ```
-
+___
 ## 4# VLAN Aware
 
 - Enable VLAN Aware checkbox as in the following image.
@@ -171,8 +171,7 @@ Requirements before begin:
  
 - Check your leased and assigned IPs by your home LAN network DHCP, with `ifconfig` or `ip a` to utilize the mentioned commands install; `net-tools` and `ifupdown`.
 
-> [!NOTE]
-> (copy or write down the assigned IPv4 for the next step).
+> Copy or write down the assigned IPv4 for the next step.
 
 - Check connectivity if you can download updates, `ping 8.8.8.8` proceed with the next steps.
 - Do `sudo apt update`
@@ -228,43 +227,32 @@ search .
 - `sudo apt install qemu-guest-agent`
 - `sudo apt update` `sudo apt upgrade`
 
-
-
-```
- 
- alias k=kubectl
- complete -o default -F __start_kubectl k
- export do="--dry-run=client -o yaml"
- 
- export now="--force --grace-period 0"
- 
- set tabstop=2
- set expandtab
- set shiftwidth=2
- 
- source <(kubectl completion bash) # set up autocomplete in bash into the current shell, bash-completion package should be installed first.
-echo "source <(kubectl completion bash)" >> ~/.bashrc # add autocomplete permanently to your bash shell.
-```
-
-```
-Kubectl autocomplete
-
-BASH
-source <(kubectl completion bash) # set up autocomplete in bash into the current shell, bash-completion package should be installed first.
-echo "source <(kubectl completion bash)" >> ~/.bashrc # add autocomplete permanently to your bash shell.
-You can also use a shorthand alias for kubectl that also works with completion:
-
-alias k=kubectl
-complete -o default -F __start_kubectl k
-
+``` 
+    # Kubectl Autocomplete - kubectl
+    
+    alias k=kubectl
+    complete -o default -F __start_kubectl k
+    
+    export do="--dry-run=client -o yaml"
+    export now="--force --grace-period 0"
+     
+    set tabstop=2
+    set expandtab
+    set shiftwidth=2
+     
+    source <(kubectl completion bash) # set up autocomplete in bash into the current shell, bash-completion package should be installed first.
+    echo "source <(kubectl completion bash)" >> ~/.bashrc # add autocomplete permanently to your bash shell.
 ```
 
+___
 ## 2# Preparing machines (must do, before init cluster)
 
 - Check UUID are unique with `sudo cat /sys/class/dmi/id/product_uuid`.
 - Check if swap is in use, To disable swap, sudo `swapoff -a` can be used to disable swapping `!! temporarily !!`.
 - Method to **permanently disable Swap**. Edit the `/etc/fstab` file using a text editor like sudo vi `/etc/fstab` or `sudo nano /etc/fstab`.
 - Comment out the swap partition or file by adding a # symbol at the beginning of the line. For example:
+
+>`#/swap.img      none    swap    sw      0       0 `
 
 ```sh
 # /etc/fstab: static file system information.
@@ -275,46 +263,52 @@ complete -o default -F __start_kubectl k
 #
 # <file system> <mount point>   <type>  <options>       <dump>  <pass>
 # / was on /dev/ubuntu-vg/ubuntu-lv during curtin installation
-/dev/disk/by-id/dm-uuid-LVM-M2cqwVXBkOrJx8Sgzq9X22zuIukgGpm3wsQu2UO4MdFsJ6W9LV31dYewHxmT17fK / ext4 defaults 0 1
+/dev/disk/by-id/dm-uuid-LVM-HASHXXXXXX / ext4 defaults 0 1
 # /boot was on /dev/sda2 during curtin installation
-/dev/disk/by-uuid/f6a45375-f3a1-4b73-a88d-374b10606da2 /boot ext4 defaults 0 1
-#/swap.img      none    swap    sw      0       0
-
-# This line above 
+/dev/disk/by-uuid/HASHXXXXXX /boot ext4 defaults 0 1
+#/swap.img      none    swap    sw      0       0  <----- COMMENT THIS LINE AND SAVE FILE
 ```
-
 - Save the changes and exit the editor.
 - Reload system configurations, `sudo systemctl daemon-reload` and optionally reboot to ensure the changes take effect `sudo reboot`.
-- Verify Swap Disabled `free -h` (The swap line should show 0 total, 0 used, and 0 free).
+- Verify Swap Disabled `free -h`.
 
-
+```               total        used        free      shared  buff/cache   available
+Mem:           5.9Gi       1.1Gi       2.1Gi       2.8Mi       2.9Gi       4.7Gi
+Swap:             0B          0B          0B
+```
+___
 # Cluster setup and component installation
-## 1# (All Nodes) Installing containeruntime, kubeadm, kubelet and kubectl.
+## 1# (All Nodes) Installing containeruntime
 
-- Install containerd on all machines `sudo apt install containerd`
+- Install **containerd** on all machines `sudo apt install containerd`
 - Check status on all machines `sudo service containerd status`
-- Create a dir for containerd `sudo mkdir /etc/containerd`
-- Import basic config for containerd `containerd config default | sudo tee /etc/containerd/config.toml` make sure is created `ls -l /etc/containerd`.
+- Create a **dir** for containerd `sudo mkdir /etc/containerd`
+- Import basic config for containerd `containerd config default | sudo tee /etc/containerd/config.toml` make sure the config.toml file is created `ls -l /etc/containerd`.
 - Change `SystemdCgroup` to `true` in the file `sudo nano /etc/containerd/config.toml`
 - Verify swap is disabled `free -h` in `/etc/fstab` the line with type `swap` must be commented.
 - Enable `net.ipv4.ip_forward=1` in the file `sudo nano /etc/sysctl.conf`.
 - Create a file `/etc/modules-load.d/k8s.conf` add `br_netfilter`
-- Reboot after these changes.
-- These instructions are for Kubernetes v1.30. - Update the apt package index and install packages needed to use the Kubernetes apt repository:
+- Reboot after these changes.</br>
+
+___
+## 2# (All Nodes) Cluster component installation
+
+### 2.1# (All Nodes) Certificate management
+
+- These instructions are for Kubernetes v1.31, update the apt package index and install packages needed to use the Kubernetes apt repository:
 ```
 sudo apt-get update
-# apt-transport-https may be a dummy package; if so, you can skip that package
 sudo apt-get install -y apt-transport-https ca-certificates curl gpg
 ```
-- Download the public signing key for the Kubernetes package repositories. The same signing key is used for all repositories so you can disregard the version in the URL:
+- Download the public signing key for the Kubernetes package repositories. 
+- The same signing key is used for all repositories so you can disregard the version in the URL:
+- If the directory `/etc/apt/keyrings` does not exist, it should be created before the curl command, read the note below.
+
 ```
-# If the directory `/etc/apt/keyrings` does not exist, it should be created before the curl command, read the note below.
-# sudo mkdir -p -m 755 /etc/apt/keyrings
+sudo mkdir -p -m 755 /etc/apt/keyrings
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 ```
-`Note: In releases older than Debian 12 and Ubuntu 22.04, directory /etc/apt/keyrings does not exist by default, and it should be created before the curl command.`
-
-Add the appropriate Kubernetes apt repository. Please note that this repository have packages only for Kubernetes 1.30; for other Kubernetes minor versions, you need to change the Kubernetes minor version in the URL to match your desired minor version (you should also check that you are reading the documentation for the version of Kubernetes that you plan to install).
+- Add the appropriate Kubernetes apt repository. Please note that this is for Kubernetes 1.31 version.
 ```
 # This overwrites any existing configuration in /etc/apt/sources.list.d/kubernetes.list
 echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.31/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
@@ -325,134 +319,127 @@ echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.
 sudo apt-get update
 sudo apt-get install -y kubelet kubeadm kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
-(Optional) Enable the kubelet service before running kubeadm:
-
-sudo systemctl enable --now kubelet
 ```
 
-- Only on the controlplane node `sudo kubeadm init`
+- (Optional) Enable the kubelet service before running kubeadm:
 
-## (OUTPUT)
-```rohen@monstrussy-master:~$ sudo kubeadm init
-I1230 19:50:24.789783    3036 version.go:261] remote version is much newer: v1.32.0; falling back to: stable-1.31
-[init] Using Kubernetes version: v1.31.4
-[preflight] Running pre-flight checks
-[preflight] Pulling images required for setting up a Kubernetes cluster
-[preflight] This might take a minute or two, depending on the speed of your internet connection
-[preflight] You can also perform this action beforehand using 'kubeadm config images pull'
-W1230 19:50:25.174384    3036 checks.go:846] detected that the sandbox image "registry.k8s.io/pause:3.8" of the container runtime is inconsistent with that used by kubeadm.It is recommended to use "registry.k8s.io/pause:3.10" as the CRI sandbox image.
-[certs] Using certificateDir folder "/etc/kubernetes/pki"
-[certs] Generating "ca" certificate and key
-[certs] Generating "apiserver" certificate and key
-[certs] apiserver serving cert is signed for DNS names [kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local monstrussy-master] and IPs [10.96.0.1 192.168.1.132]
-[certs] Generating "apiserver-kubelet-client" certificate and key
-[certs] Generating "front-proxy-ca" certificate and key
-[certs] Generating "front-proxy-client" certificate and key
-[certs] Generating "etcd/ca" certificate and key
-[certs] Generating "etcd/server" certificate and key
-[certs] etcd/server serving cert is signed for DNS names [localhost monstrussy-master] and IPs [192.168.1.132 127.0.0.1 ::1]
-[certs] Generating "etcd/peer" certificate and key
-[certs] etcd/peer serving cert is signed for DNS names [localhost monstrussy-master] and IPs [192.168.1.132 127.0.0.1 ::1]
-[certs] Generating "etcd/healthcheck-client" certificate and key
-[certs] Generating "apiserver-etcd-client" certificate and key
-[certs] Generating "sa" key and public key
-[kubeconfig] Using kubeconfig folder "/etc/kubernetes"
-[kubeconfig] Writing "admin.conf" kubeconfig file
-[kubeconfig] Writing "super-admin.conf" kubeconfig file
-[kubeconfig] Writing "kubelet.conf" kubeconfig file
-[kubeconfig] Writing "controller-manager.conf" kubeconfig file
-[kubeconfig] Writing "scheduler.conf" kubeconfig file
-[etcd] Creating static Pod manifest for local etcd in "/etc/kubernetes/manifests"
-[control-plane] Using manifest folder "/etc/kubernetes/manifests"
-[control-plane] Creating static Pod manifest for "kube-apiserver"
-[control-plane] Creating static Pod manifest for "kube-controller-manager"
-[control-plane] Creating static Pod manifest for "kube-scheduler"
-[kubelet-start] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
-[kubelet-start] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
-[kubelet-start] Starting the kubelet
-[wait-control-plane] Waiting for the kubelet to boot up the control plane as static Pods from directory "/etc/kubernetes/manifests"
-[kubelet-check] Waiting for a healthy kubelet at http://127.0.0.1:10248/healthz. This can take up to 4m0s
-[kubelet-check] The kubelet is healthy after 501.385828ms
-[api-check] Waiting for a healthy API server. This can take up to 4m0s
-[api-check] The API server is healthy after 4.501163113s
-[upload-config] Storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
-[kubelet] Creating a ConfigMap "kubelet-config" in namespace kube-system with the configuration for the kubelets in the cluster
-[upload-certs] Skipping phase. Please see --upload-certs
-[mark-control-plane] Marking the node monstrussy-master as control-plane by adding the labels: [node-role.kubernetes.io/control-plane node.kubernetes.io/exclude-from-external-load-balancers]
-[mark-control-plane] Marking the node monstrussy-master as control-plane by adding the taints [node-role.kubernetes.io/control-plane:NoSchedule]
-[bootstrap-token] Using token: arfkne.2cq6qe6ayo8oa0xv
-[bootstrap-token] Configuring bootstrap tokens, cluster-info ConfigMap, RBAC Roles
-[bootstrap-token] Configured RBAC rules to allow Node Bootstrap tokens to get nodes
-[bootstrap-token] Configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
-[bootstrap-token] Configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
-[bootstrap-token] Configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
-[bootstrap-token] Creating the "cluster-info" ConfigMap in the "kube-public" namespace
-[kubelet-finalize] Updating "/etc/kubernetes/kubelet.conf" to point to a rotatable kubelet client certificate and key
-[addons] Applied essential addon: CoreDNS
-[addons] Applied essential addon: kube-proxy
+```
+sudo systemctl enable --now kubelet
+```
+___
 
-Your Kubernetes control-plane has initialized successfully!
 
+## 3# (Master Only) Kubeadm Init
+
+- We initialize the cluster with the `kubeadm init` command, **very important step here**, if you will use Calico as CNI Plugin fill all the parameters and specially `--pod-network-cidr` is required for Calico CNI Plugin, as you can see on the following command:
+
+```
+sudo kubeadm init --control-plane-endpoint=192.168.1.132 --node-name=monstrussy-master --pod-network-cidr=192.168.0.0/18 --apiserver-advertise-address=192.168.1.132
+```
+
+- Once you see the output `"Your Kubernetes control-plane has initialized successfully!"` after `kubeadm init` command generate `.kube/config files`, to start using your cluster, you need to run the following as a regular user:
+
+```
 To start using your cluster, you need to run the following as a regular user:
 
   mkdir -p $HOME/.kube
   sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
   sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
+```
+```
 Alternatively, if you are the root user, you can run:
 
   export KUBECONFIG=/etc/kubernetes/admin.conf
-
-You should now deploy a pod network to the cluster.
-Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
-  https://kubernetes.io/docs/concepts/cluster-administration/addons/
-
-Then you can join any number of worker nodes by running the following on each as root:
-
-kubeadm join 192.168.1.132:6443 --token arfkne.2cq6qe6ayo8oa0xv \
-        --discovery-token-ca-cert-hash sha256:aa29923615f91430fcf66c6e0e1307ca67f398c458b55bbf387cdc6400e97b57 
-
 ```
 
-
-
-- Next step, generate .kube/config files, to start using your cluster, you need to run the following as a regular user:
-
+- With the following command example, send a copy of your `./kube` folder to all your node machines that will join to the fleet / cluster, this will allow you to use `kubectl` commands from `worker nodes`.
 ```
-  mkdir -p $HOME/.kube
-  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-  sudo chown $(id -u):$(id -g) $HOME/.kube/config
-`
+  #Copy command ( scp -r <SRC_DIR> <DST_HOST_USER>@<DST_HOST_IP>:<DST_DIR> )
+  scp -r .kube/ rohen@192.168.1.133:/home/rohen/.kube
+```
 
-e-system/etcd-monstrussy-master" err="Get \"https://192.168.1.132:6443/api/v1/namespaces/kube-system/pods/etcd-monstrussy-ma>
-Dec 30 20:20:01 monstrussy-master kubelet[3532]: I1230 20:20:01.516407    3532 status_manager.go:851] "Failed to get status for pod" podUID="ce0ec39cb45dd988d4c5cccfbc1ca17f" pod="kube-system/kube-scheduler-monstrussy-master" err="Get \"https://192.168.1.132:6443/api/v1/namespaces/kube-system/pods/kube-sch>
-Dec 30 20:20:01 monstrussy-master kubelet[3532]: E1230 20:20:01.883853    3532 kubelet.go:2902] "Container runtime network not ready" networkReady="NetworkReady=false reason:NetworkPluginNotReady messag
+___
+## 4# (Master Only) Installing CNI Plugin
 
-: Post \"https://192.1>
-Dec 30 19:50:46 monstrussy-master kubelet[3124]: I1230 19:50:46.020926    3124 dynamic_cafile_content.go:160] "Starting controller" name="client-ca-bundle::/etc/kubernetes/pki/ca.crt"
-Dec 30 19:50:46 monstrussy-master kubelet[3124]: E1230 19:50:46.022487    3124 log.go:32] "RuntimeConfig from runtime service failed" err="rpc error: code = Unimplemented desc = unknown method RuntimeConfig for service runtime.v1.RuntimeService"
+- Immediately after cluster initialization your cluster requires the CNI plugin that configures all networking for Pods on your cluster.</br></br>
+- Calico CNI Network plugin installation steps / all the commands:
 
+```sh
+kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
 
-20
+#Remove the taints on the control plane so that you can schedule pods on it.
+kubectl taint nodes --all node-role.kubernetes.io/control-plane-
 
-Please perform below steps on the master node. It works like charm.
+swapoff -a
 
-1. sudo -i
+strace -eopenat kubectl version
 
-2. swapoff -a
-
-3. exit
-
-4. strace -eopenat kubectl version
-
-5. service kubelet restart
+service kubelet restart
 
 service containerd restart
 
-sudo netplan try
-sudo netplan apply
+kubectl get nodes -o wide
 
-kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+kubectl get pods -A -o wide
+```
+
+> If you face any issues from the provided commands, check their current versions and steps in the [Calico official docmentation](https://docs.tigera.io/calico/latest/getting-started/kubernetes/self-managed-onprem/onpremises).
 
 
-sudo kubeadm init --control-plane-endpoint=192.168.1.132 --node-name=monstrussy-master --pod-network-cidr=192.168.0.0/18 --apiserver-advertise-address=192.168.1.132
+- Flannel CNI Network plugin installation steps:
+
+```sh
+#Apply the Flannel network configuration using the following command:
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+#Remove the taints on the control plane so that you can schedule pods on it.
+kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+
+swapoff -a
+
+strace -eopenat kubectl version
+
+service kubelet restart
+
+service containerd restart
+
+kubectl get nodes -o wide
+
+kubectl get pods -A -o wide
+```
+
+> If you face any issues from the provided commands, check their current versions and steps in the [Flannel official docmentation](https://github.com/flannel-io/flannel#deploying-flannel-manually).
+
+___
+
+## 5# (Worker Nodes) kubeadm join
+
+> In the MASTER NODE obtain the token to join fleet.
+
+- Run `kubeadm token create --print-join-command`
+
+> SSH into your WORKER NODES
+
+- Join the cluster fleet with the obtained token and command from MASTER:
+
+>`sudo kubeadm join 192.168.1.132:6443 --token XXXX.XXXXXX --discovery-token-ca-cert-hash sha256:XXXXXXXXXXXXXXXX`
+
+- You are good to go now with the nodes added to the cluster. If you receive `connection refused`, by typing `kubectl` commands, make sure you performed this step:
+- With the following command example, send a copy of your `./kube` folder to all your node machines that will join to the fleet / cluster, this will allow you to use `kubectl` commands from `worker nodes`.
+```
+  #Copy command ( scp -r <SRC_DIR> <DST_HOST_USER>@<DST_HOST_IP>:<DST_DIR> )
+  scp -r .kube/ rohen@192.168.1.133:/home/rohen/.kube
+ 
+  swapoff -a
+    
+  strace -eopenat kubectl version
+    
+  service kubelet restart
+    
+  service containerd restart
+    
+  kubectl get nodes -o wide
+    
+  kubectl get pods -A -o wide
+```
+
