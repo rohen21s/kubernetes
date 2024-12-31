@@ -40,6 +40,7 @@ Therefore what we need to do here, is request to our DHCP one within the correct
 
 ```sh
 # /etc/network/interfaces
+
 root@proxmonster:~# cat /etc/network/interfaces
 auto lo
 iface lo inet loopback
@@ -74,7 +75,8 @@ IP Forwarding: IP forwarding is the ability of a Linux system to route packets b
 
 - 1.6.- Edit `/etc/hosts/` file. Adding new IP as your new hostname. Example:
 ```sh
-root@proxmonster:~# cat /etc/hosts
+# /etc/hosts
+
 127.0.0.1 localhost.localdomain localhost
 #192.168.100.2 proxmonster.rohenslab.xyz proxmonster
 192.168.1.138 proxmonster.rohenslab.xyz proxmonster
@@ -98,8 +100,8 @@ ___
 - 2.1.- Edit `/etc/apt/sources.list` add these commented lines: 
 
 ```sh
-# /etc/apt/sources.list                                             
-
+# /etc/apt/sources.list     
+                                        
 deb http://ftp.es.debian.org/debian bookworm main contrib
 
 deb http://ftp.es.debian.org/debian bookworm-updates main contrib
@@ -141,10 +143,6 @@ GRUB_CMDLINE_LINUX_DEFAULT="quiet intel_iommu=on"
 
 ```sh
 # /etc/modules: kernel modules to load at boot time.
-#
-# This file contains the names of kernel modules that should be loaded
-# at boot time, one per line. Lines beginning with "#" are ignored.
-# Parameters can be specified after the module name.
 
 vfio
 vfio_iommu_type1
@@ -180,11 +178,8 @@ Requirements before begin:
 - Additionally you can `DHCP Bind IP+Mac on your Router settings`.
 - The file is`sudo nano /etc/netplan/50-cloud-init.yaml` the following example can be applicable to your use case only change IPs to yours.
 ```sh
-# This file is generated from information provided by the datasource.  Changes
-# to it will not persist across an instance reboot.  To disable cloud-init's
-# network configuration capabilities, write a file
-# /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg with the following:
-# network: {config: disabled}
+# /etc/netplan/50-cloud-init.yaml
+
 network:
     version: 2
     ethernets:
@@ -199,25 +194,7 @@ network:
 - Make sure `/etc/resolv.conf` doesn't contain anything strange because otherwise can break cluster's DNS initial configurations.
 
 ```sh
-# This is /run/systemd/resolve/stub-resolv.conf managed by man:systemd-resolved(8).
-# Do not edit.
-#
-# This file might be symlinked as /etc/resolv.conf. If you're looking at
-# /etc/resolv.conf and seeing this text, you have followed the symlink.
-#
-# This is a dynamic resolv.conf file for connecting local clients to the
-# internal DNS stub resolver of systemd-resolved. This file lists all
-# configured search domains.
-#
-# Run "resolvectl status" to see details about the uplink DNS servers
-# currently in use.
-#
-# Third party programs should typically not access this file directly, but only
-# through the symlink at /etc/resolv.conf. To manage man:resolv.conf(5) in a
-# different way, replace this symlink by a static file or a different symlink.
-#
-# See man:systemd-resolved.service(8) for details about the supported modes of
-# operation for /etc/resolv.conf.
+# /etc/resolv.conf
 
 nameserver 127.0.0.53
 options edns0 trust-ad
@@ -228,20 +205,20 @@ search .
 - `sudo apt update` `sudo apt upgrade`
 
 ``` 
-    # Kubectl Autocomplete - kubectl
+# Kubectl Autocomplete - kubectl
     
-    alias k=kubectl
-    complete -o default -F __start_kubectl k
+alias k=kubectl
+complete -o default -F __start_kubectl k
     
-    export do="--dry-run=client -o yaml"
-    export now="--force --grace-period 0"
+export do="--dry-run=client -o yaml"
+export now="--force --grace-period 0"
      
-    set tabstop=2
-    set expandtab
-    set shiftwidth=2
-     
-    source <(kubectl completion bash) # set up autocomplete in bash into the current shell, bash-completion package should be installed first.
-    echo "source <(kubectl completion bash)" >> ~/.bashrc # add autocomplete permanently to your bash shell.
+set tabstop=2
+set expandtab
+set shiftwidth=2
+ 
+source <(kubectl completion bash) # set up autocomplete in bash into the current shell, bash-completion package should be installed first.
+echo "source <(kubectl completion bash)" >> ~/.bashrc # add autocomplete permanently to your bash shell.
 ```
 
 ___
@@ -256,11 +233,6 @@ ___
 
 ```sh
 # /etc/fstab: static file system information.
-#
-# Use 'blkid' to print the universally unique identifier for a
-# device; this may be used with UUID= as a more robust way to name devices
-# that works even if disks are added and removed. See fstab(5).
-#
 # <file system> <mount point>   <type>  <options>       <dump>  <pass>
 # / was on /dev/ubuntu-vg/ubuntu-lv during curtin installation
 /dev/disk/by-id/dm-uuid-LVM-HASHXXXXXX / ext4 defaults 0 1
@@ -342,20 +314,20 @@ sudo kubeadm init --control-plane-endpoint=192.168.1.132 --node-name=monstrussy-
 ```
 To start using your cluster, you need to run the following as a regular user:
 
-  mkdir -p $HOME/.kube
-  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 ```
 Alternatively, if you are the root user, you can run:
 
-  export KUBECONFIG=/etc/kubernetes/admin.conf
+export KUBECONFIG=/etc/kubernetes/admin.conf
 ```
 
 - With the following command example, send a copy of your `./kube` folder to all your node machines that will join to the fleet / cluster, this will allow you to use `kubectl` commands from `worker nodes`.
 ```
-  #Copy command ( scp -r <SRC_DIR> <DST_HOST_USER>@<DST_HOST_IP>:<DST_DIR> )
-  scp -r .kube/ rohen@192.168.1.133:/home/rohen/.kube
+#Copy command ( scp -r <SRC_DIR> <DST_HOST_USER>@<DST_HOST_IP>:<DST_DIR> )
+scp -r .kube/ rohen@192.168.1.133:/home/rohen/.kube
 ```
 
 ___
@@ -429,19 +401,19 @@ ___
 - You are good to go now with the nodes added to the cluster. If you receive `connection refused`, by typing `kubectl` commands, make sure you performed this step:
 - With the following command example, send a copy of your `./kube` folder to all your node machines that will join to the fleet / cluster, this will allow you to use `kubectl` commands from `worker nodes`.
 ```
-  #Copy command ( scp -r <SRC_DIR> <DST_HOST_USER>@<DST_HOST_IP>:<DST_DIR> )
-  scp -r .kube/ rohen@192.168.1.133:/home/rohen/.kube
+#Copy command ( scp -r <SRC_DIR> <DST_HOST_USER>@<DST_HOST_IP>:<DST_DIR> )
+scp -r .kube/ rohen@192.168.1.133:/home/rohen/.kube
  
-  swapoff -a
+swapoff -a
     
-  strace -eopenat kubectl version
+strace -eopenat kubectl version
     
-  service kubelet restart
+service kubelet restart
     
-  service containerd restart
+service containerd restart
     
-  kubectl get nodes -o wide
+kubectl get nodes -o wide
     
-  kubectl get pods -A -o wide
+kubectl get pods -A -o wide
 ```
 
