@@ -8,7 +8,7 @@ Lens is an Integrated Development Environment (IDE) designed to simplify and enh
 > Download MuhammedKalkan/OpenLens/releases  [**here**](https://github.com/MuhammedKalkan/OpenLens/releases)
 
 <div align="center">
-  <img src="img_7.png">
+  <img src="assets/img_7.png">
 </div>
 
 ___
@@ -20,7 +20,7 @@ ___
 - Access to [**MuhammedKalkan/OpenLens/releases**](https://github.com/MuhammedKalkan/OpenLens/releases), depending on your OS, you must download the installation file.
 
 <div align="center">
-  <img src="img.png">
+  <img src="assets/img.png">
 </div>
 
 ___
@@ -29,19 +29,19 @@ ___
 - 1.- From the Home page, go to `Browse Clusters in Catalog`.
 
 <div align="center">
-  <img src="img_1.png">
+  <img src="assets/img_1.png">
 </div>
 
 - 2.- Now you have multiple options to connect your cluster, in the `+` icon, if you have the cluster on-premises / home lab as in my use case I must import the `.kube/config` file to connect my cluster to Lens `Add from kubeconfig`.
 
 <div align="center">
-  <img src="img_2.png">
+  <img src="assets/img_2.png">
 </div>
 
 - 3.- Copy the content from `~/.kube/config` `master` cluster host machine and paste it here.
 
 <div align="center">
-  <img src="img_3.png">
+  <img src="assets/img_3.png">
 </div>
 
 ___
@@ -78,19 +78,19 @@ ___
 - We'll install `Prometheus` monitoring via `Helm Charts` follow the steps below, search for `kube-prometheus` chart.
 
 <div align="center">
-  <img src="img_4.png">
+  <img src="assets/img_4.png">
 </div>
 
 - Select the `version` and `Install`.
 
 <div align="center">
-  <img src="img_5.png">
+  <img src="assets/img_5.png">
 </div>
 
 - Access to `Lens > Cluster Settings > Metrics` select `Auto Detect Prometeus` in the drop down menu. Enjoy ;)
 
 <div align="center">
-  <img src="img_6.png">
+  <img src="assets/img_6.png">
 </div>
 
 >[!NOTE]

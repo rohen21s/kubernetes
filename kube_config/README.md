@@ -156,7 +156,7 @@ ___
 
 - Enable VLAN Aware checkbox as in the following image.
 
-![VLAN Aware checkbox on](image.png)
+![VLAN Aware checkbox on](assets/image.png)
 
 ___
 
