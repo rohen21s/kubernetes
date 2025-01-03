@@ -1,10 +1,15 @@
-# Lens Installation
+# Lens
+___
 ## Description
 Lens is an Integrated Development Environment (IDE) designed to simplify and enhance the experience of working with Kubernetes clusters, also it can be very useful as a "_portable_" tool to manage clusters. Basically it provides flexibility to manage clusters, visualize the resources, interactive user interface, customization and extensibility, real-time monitoring.
 
 > Official Lens Website [**here**](https://docs.k8slens.dev/getting-started/install-lens/#__tabbed_1_1) 
 
 > Download MuhammedKalkan/OpenLens/releases  [**here**](https://github.com/MuhammedKalkan/OpenLens/releases)
+
+<div align="center">
+  <img src="img_7.png">
+</div>
 
 ___
 ## Installation
@@ -18,7 +23,7 @@ ___
   <img src="img.png">
 </div>
 
-
+___
 ## Adding the cluster
 
 - 1.- From the Home page, go to `Browse Clusters in Catalog`.
@@ -47,9 +52,9 @@ ___
 - Prometheus
 
 >[!NOTE]
-> - Helm - [Methods to Install Helm based on your OS](https://helm.sh/docs/intro/install/)
+> - [Methods to Install Helm based on your OS](https://helm.sh/docs/intro/install/)
 
-
+___
 ### Installing Helm
 
 ```
@@ -67,7 +72,7 @@ sudo apt-get update
 
 sudo apt-get install helm
 ```
-
+___
 ### Installing Prometheus
 
 - We'll install `Prometheus` monitoring via `Helm Charts` follow the steps below, search for `kube-prometheus` chart.
