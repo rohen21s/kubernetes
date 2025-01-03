@@ -17,7 +17,7 @@ ___
 > [!NOTE]
 > Don't worry you don't need to install anything on your cluster host machine, only intallation in your workspace machine. 
 
-- Access to [**MuhammedKalkan/OpenLens/releases**](https://github.com/MuhammedKalkan/OpenLens/releases), depending on your OS, you must select the installation file.
+- Access to [**MuhammedKalkan/OpenLens/releases**](https://github.com/MuhammedKalkan/OpenLens/releases), depending on your OS, you must download the installation file.
 
 <div align="center">
   <img src="img.png">
@@ -32,7 +32,7 @@ ___
   <img src="img_1.png">
 </div>
 
-- 2.- Now you have multiple options to connect your cluster, in the `+` icon, if you have the cluster on-premises / home lab as in my use case I must import the `.kube/config` file to connect my cluster to Lens `Add from kubeconfig`
+- 2.- Now you have multiple options to connect your cluster, in the `+` icon, if you have the cluster on-premises / home lab as in my use case I must import the `.kube/config` file to connect my cluster to Lens `Add from kubeconfig`.
 
 <div align="center">
   <img src="img_2.png">
@@ -81,7 +81,7 @@ ___
   <img src="img_4.png">
 </div>
 
-- Select the version and `Install`.
+- Select the `version` and `Install`.
 
 <div align="center">
   <img src="img_5.png">
