@@ -14,27 +14,79 @@ ___
 
 - Access to [**MuhammedKalkan/OpenLens/releases**](https://github.com/MuhammedKalkan/OpenLens/releases), depending on your OS, you must select the installation file.
 
-![img.png](img.png)
+<div align="center">
+  <img src="img.png">
+</div>
+
 
 ## Adding the cluster
 
 - 1.- From the Home page, go to `Browse Clusters in Catalog`.
 
-![img_1.png](img_1.png)
+<div align="center">
+  <img src="img_1.png">
+</div>
 
 - 2.- Now you have multiple options to connect your cluster, in the `+` icon, if you have the cluster on-premises / home lab as in my use case I must import the `.kube/config` file to connect my cluster to Lens `Add from kubeconfig`
 
-![img_2.png](img_2.png)
+<div align="center">
+  <img src="img_2.png">
+</div>
 
-- 3.- Copy the content from `~/.kube/config` `master` cluster host machine and paste it here:
+- 3.- Copy the content from `~/.kube/config` `master` cluster host machine and paste it here.
 
-![img_3.png](img_3.png)
+<div align="center">
+  <img src="img_3.png">
+</div>
 
 ___
 ## Enabling Metrics
 ### Prerequisites
  
-```
 - Helm
+- Prometheus
+
+>[!NOTE]
+> - Helm - [Methods to Install Helm based on your OS](https://helm.sh/docs/intro/install/)
+
+
+### Installing Helm
+
+```
+sudo su
 ```
 
+```
+curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+
+sudo apt-get install apt-transport-https --yes
+ 
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+ 
+sudo apt-get update
+
+sudo apt-get install helm
+```
+
+### Installing Prometheus
+
+- We'll install `Prometheus` monitoring via `Helm Charts` follow the steps below, search for `kube-prometheus` chart.
+
+<div align="center">
+  <img src="img_4.png">
+</div>
+
+- Select the version and `Install`.
+
+<div align="center">
+  <img src="img_5.png">
+</div>
+
+- Access to `Lens > Cluster Settings > Metrics` select `Auto Detect Prometeus` in the drop down menu. Enjoy ;)
+
+<div align="center">
+  <img src="img_6.png">
+</div>
+
+>[!NOTE]
+>If you face any issues or need additional options for Lens cluster monitoring, check the [**official docu**](https://docs.k8slens.dev/cluster/cluster-metrics/?h=metrics#__tabbed_1_1).
