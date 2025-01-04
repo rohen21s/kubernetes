@@ -11,6 +11,8 @@ Lens is an Integrated Development Environment (IDE) designed to simplify and enh
   <img src="assets/img_7.png">
 </div>
 
+
+
 ___
 ## Installation
 
@@ -32,11 +34,15 @@ ___
   <img src="assets/img_1.png">
 </div>
 
+<br>
+
 - 2.- Now you have multiple options to connect your cluster, in the `+` icon, if you have the cluster on-premises / home lab as in my use case I must import the `.kube/config` file to connect my cluster to Lens `Add from kubeconfig`.
 
 <div align="center">
   <img src="assets/img_2.png">
 </div>
+
+<br>
 
 - 3.- Copy the content from `~/.kube/config` `master` cluster host machine and paste it here.
 
@@ -81,11 +87,15 @@ ___
   <img src="assets/img_4.png">
 </div>
 
+<br>
+
 - Select the `version` and `Install`.
 
 <div align="center">
   <img src="assets/img_5.png">
 </div>
+
+<br>
 
 - Access to `Lens > Cluster Settings > Metrics` select `Auto Detect Prometeus` in the drop down menu. Enjoy ;)
 
