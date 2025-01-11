@@ -164,7 +164,7 @@ kubectl create -f https://raw.githubusercontent.com/kubernetes-sigs/nfs-subdir-e
 ```
 
 - Now check your NFS Server for the SUCCESS inside the PVC's directory.
-- Delete the test resources:
+- Delete the test resources: 
 
 ```shell
 
