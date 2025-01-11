@@ -84,14 +84,11 @@ sudo mount NFSSERVER_IP:/var/nfs/general /home/rohen/nfs/general
 >[!Note]
 > Can use the -o nconnect=n flag when mounting NFS share from the client to boost IOPS for certain workloads. Where “n” is the number of connections to establish between this client and the target NFS Server. The number can be from 1 to 16.
 
-`FROM: https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-20-04#step-4-adjusting-the-firewall-on-the-host
-`
-
+> For more information on the detailed steps [LINK](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-20-04)
 
 ```shell
-
-MOCK STEPS:
-
+#Mock
+---
 Set Up NFS Mount
 To set up an NFS mount using nfs-kernel-server, follow these steps:
 
@@ -131,5 +128,51 @@ df -h
 
 This setup allows you to share directories between a server and a client using NFS.
 
-
 ```
+
+# Configuring access to this NFS on k8s Cluster
+
+## Deploying NFS Subdir External Provisioner to your cluster
+
+> To note again, you must already have an NFS Server, with the previous steps.
+
+- We are going to deploy nfs-subdir-external-provisioner with Helm.
+
+- Indicate your NFS server IP, and the shared directory below on the `--set` fields.
+
+```shell
+
+helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
+helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
+--set nfs.server=x.x.x.x \
+--set nfs.path=/exported/
+```
+
+>[!Note]
+> For more detailed instructions main github page [nfs-subdir-external-provisioner](https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/tree/master?tab=readme-ov-file#kubernetes-nfs-subdir-external-provisioner)
+
+## Testing the Storage Class
+
+- Finally, test your environment! 
+- Now we'll test your NFS subdir external provisioner by creating a persistent volume claim and a pod that writes a test file to the volume. 
+- This will make sure that the provisioner is provisioning and that the NFS server is reachable and writable.
+
+- Deploy the test resources:
+```shell
+
+kubectl create -f https://raw.githubusercontent.com/kubernetes-sigs/nfs-subdir-external-provisioner/master/deploy/test-claim.yaml -f https://raw.githubusercontent.com/kubernetes-sigs/nfs-subdir-external-provisioner/master/deploy/test-pod.yaml
+```
+
+- Now check your NFS Server for the SUCCESS inside the PVC's directory.
+- Delete the test resources:
+
+```shell
+
+kubectl delete -f https://raw.githubusercontent.com/kubernetes-sigs/nfs-subdir-external-provisioner/master/deploy/test-claim.yaml -f https://raw.githubusercontent.com/kubernetes-sigs/nfs-subdir-external-provisioner/master/deploy/test-pod.yaml
+```
+
+- Now check the PVC's directory has been deleted.
+
+## Optional download all the manifests for reference
+
+You can download all the `yaml manifests` for future reference and usage [nfs-subdir-external-provisioner/deploy](https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/tree/master/deploy)
