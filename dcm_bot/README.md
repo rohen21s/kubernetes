@@ -7,11 +7,11 @@
 
 - Muse require API keys passed in as environment variables:
 
-1.- **DISCORD_TOKEN** can be acquired [here](https://discordapp.com/developers/applications) by creating a 'New Application', then going to 'Bot'.
+- 1.- **DISCORD_TOKEN** can be acquired [here](https://discordapp.com/developers/applications) by creating a 'New Application', then going to 'Bot'.
 
-2.- **SPOTIFY_CLIENT_ID** and **SPOTIFY_CLIENT_SECRET** can be acquired [here](https://developer.spotify.com/dashboard) with 'Create a Client ID' (Optional).
+- 2.- **SPOTIFY_CLIENT_ID** and **SPOTIFY_CLIENT_SECRET** can be acquired [here](https://developer.spotify.com/dashboard) with 'Create a Client ID' (Optional).
 
-3.- **YOUTUBE_API_KEY** can be acquired by [creating a new project](https://console.developers.google.com/) in Google's Developer Console, enabling the `YouTube API`, and creating an `API key` under credentials.
+- 3.- **YOUTUBE_API_KEY** can be acquired by [creating a new project](https://console.developers.google.com/) in Google's Developer Console, enabling the `YouTube API`, and creating an `API key` under credentials.
 
 
 ```shell
