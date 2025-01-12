@@ -177,4 +177,3 @@ kubectl delete -f https://raw.githubusercontent.com/kubernetes-sigs/nfs-subdir-e
 
 You can download all the `yaml manifests` for future reference and usage [nfs-subdir-external-provisioner/deploy](https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/tree/master/deploy)
 
-add+
