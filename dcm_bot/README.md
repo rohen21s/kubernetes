@@ -60,36 +60,39 @@ spec:
         app: muse
     spec:
       containers:
-      - name: muse
-        image: ghcr.io/museofficial/muse:latest
-        env:
-        - name: DISCORD_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: muse-secrets
-              key: DISCORD_TOKEN
-        - name: SPOTIFY_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: muse-secrets
-              key: SPOTIFY_CLIENT_ID
-        - name: SPOTIFY_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: muse-secrets
-              key: SPOTIFY_CLIENT_SECRET
-        - name: YOUTUBE_API_KEY
-          valueFrom:
-            secretKeyRef:
-              name: muse-secrets
-              key: YOUTUBE_API_KEY
-        volumeMounts:
-        - name: data
-          mountPath: /data
+        - name: muse
+          image: ghcr.io/museofficial/muse:latest
+          env:
+            - name: DISCORD_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: muse-secrets
+                  key: DISCORD_TOKEN
+            - name: SPOTIFY_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: muse-secrets
+                  key: SPOTIFY_CLIENT_ID
+            - name: SPOTIFY_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: muse-secrets
+                  key: SPOTIFY_CLIENT_SECRET
+            - name: YOUTUBE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: muse-secrets
+                  key: YOUTUBE_API_KEY
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/bash", "-c", "set EventEmitter.defaultMaxListeners = 15;"]
       volumes:
-      - name: data
-        persistentVolumeClaim:
-          claimName: muse-data-pvc
+        - name: data
+          persistentVolumeClaim:
+            claimName: muse-data-pvc
 ```
 
-`# set EventEmitter.defaultMaxListeners = 15;`
