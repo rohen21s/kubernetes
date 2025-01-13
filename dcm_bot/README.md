@@ -1,4 +1,4 @@
-# Muse Bot hosting in your K8s HomeLab example
+# Muse Bot hosting in your k8s HomeLab example
 
 ## Simple steps of its implementation on your HomeLab.
 
