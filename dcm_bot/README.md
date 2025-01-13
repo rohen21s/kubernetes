@@ -91,5 +91,5 @@ spec:
         persistentVolumeClaim:
           claimName: muse-data-pvc
 ```
----
----
+
+`# set EventEmitter.defaultMaxListeners = 15;`
