@@ -32,7 +32,7 @@ Welcome to my project hub! Here you'll find links to various projects I've been 
 
 >## _**rohen21s/myProjects**_<br>
 > 
->Explore **`myProjects`** mainly created for `Development of Web Applications` with the purpose of learning `Object Oriented Programming languages`.
+>Explore **`myProjects`** mainly created for `Development of Web Applications` with the purpose of learning the basics of `Object Oriented Programming languages`.
 >
 >### 📱 Android Studio Project
 >Explore my Android development journey and mobile applications.<br>
@@ -73,4 +73,4 @@ Contributions are welcome! If you have any ideas or improvements, feel free to o
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://opensource.org/license/mit) file for details.
