@@ -1,7 +1,3 @@
-# Welcome to my Project Hub!
-Welcome to my project hub! Here you'll find links to various projects I've been working on. Each project has its own dedicated page with detailed information and instructions.
-<br>
-
 
 >## _**rohen21s/kubernetes**_<br>
 >
@@ -29,40 +25,6 @@ Welcome to my project hub! Here you'll find links to various projects I've been 
 <br>
 
 
-
->## _**rohen21s/myProjects**_<br>
-> 
->Explore **`myProjects`** mainly created for `Development of Web Applications` with the purpose of learning the basics of `Object Oriented Programming languages`.
->
->### 📱 Android Studio Project
->Explore my Android development journey and mobile applications.<br>
->**[View Android Studio Project](https://github.com/rohen21s/myProjects/tree/main/myAndroidStudio)**
-><br>
->
->### ☕ Java Development
->Dive into my Java programming projects and code samples.<br>
->**[Explore Java Projects](https://github.com/rohen21s/myProjects/tree/main/myJava)**
-><br>
->
->### 🌐 Laravel Web Development
->Check out my porfolio web application built using the Laravel framework.<br>
->**[Discover Laravel Projects](https://github.com/rohen21s/myProjects/tree/main/myLaravel)**
->
-
-
-<br>
-<br>
-
-
-
->## _**rohen21s/terraform**_
-
->TBD
-<br>
-
-<br>
-
-
 ## Getting Started
 
 Each project page contains specific instructions for setup and usage. Click on the links above to dive into the details of each project.
@@ -73,4 +35,4 @@ Contributions are welcome! If you have any ideas or improvements, feel free to o
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](https://opensource.org/license/mit) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/rohen21s/rohen21s/blob/main/LICENSE) file for details.
