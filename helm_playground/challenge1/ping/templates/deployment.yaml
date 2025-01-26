@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "ping.fullname" . }}
+  labels:
+    {{- include "ping.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "ping.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "ping.selectorLabels" . | nindent 8 }}
+    spec:
+
+      # Challenge 1 - START
+      # Challenge 1 - Part 1 - Isolate specific node groups forbidding the pods scheduling in these node groups.
+      {{- if .Values.nodeTaints }}
+      tolerations:
+        {{- toYaml .Values.nodeTaints | nindent 8 }}
+      {{- end }}
+
+
+      # Challenge 1 - Part 2 - Ensure that a pod will not be scheduled on a node that already has a pod of the same type.
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - {{ include "ping.name" . }}
+            topologyKey: "kubernetes.io/hostname"
+
+
+      # Challenge 1 - Part 3 - Pods are deployed across different availability zones.
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            {{- include "ping.selectorLabels" . | nindent 12 }}
+
+
+      # Challenge 1 - Part 4 - Ensure that another random service is up before applying the manifests.
+      initContainers:
+      - name: wait-for-service
+        image: busybox
+        command: ['sh', '-c', 'until nc -z {{ .Values.initContainer.randomService.name }} {{ .Values.initContainer.randomService.port }}; do echo waiting for {{ .Values.initContainer.randomService.name }}; sleep 15; done;']
+      # Challoenge 1 - END
+
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "ping.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
