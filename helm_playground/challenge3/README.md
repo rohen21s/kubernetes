@@ -85,7 +85,8 @@ jobs:
 # - Sets up Terraform, init plan and apply, our terraform configuration from /challenge2.
 # - Sets up Helm in order to be able to deploy helm chart from challenge1/ping-0.1.0.tgz.
 # - - - - - 
-# - NOTE: 
+
+# NOTE: 
 #   - This workflow assumes that your GKE cluster already exists. 
 #   - Make sure to replace your-cluster-name and your-cluster-zone with your actual GKE cluster details. 
 #   - Also, ensure that you have the following secrets set up in your GitHub repository:
