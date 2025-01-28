@@ -18,50 +18,77 @@
 
 ```yaml
 # To make this work, we should place the workflow file in the`.github/workflows/` directory.
-
 name: Deploy to GKE
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+  workflow_dispatch:
 
 env:
-  PROJECT_ID: your-gcp-project-id
-  GKE_CLUSTER: cluster1
-  GKE_ZONE: your-gke-zone
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GKE_CLUSTER: your-cluster-name
+  GKE_ZONE: your-cluster-zone
 
 jobs:
   deploy:
+    name: Deploy to GKE
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v0.2.0
-      with:
-        project_id: ${{ env.PROJECT_ID }}
-        service_account_key: ${{ secrets.GKE_SA_KEY }}
-        export_default_credentials: true
+      - name: Setup gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ env.PROJECT_ID }}
 
-    - name: Get GKE credentials
-      run: |
-        gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE
+      - name: Get GKE credentials
+        run: |
+          gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} --zone ${{ env.GKE_ZONE }}
 
-    - name: Set up Helm
-      uses: azure/setup-helm@v1
-      with:
-        version: v3.4.0
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
 
-    - name: Deploy Helm chart
-      run: |
-        helm upgrade --install ping ./ping \
-          --set nodeSelector.cloud\.google\.com/gke-nodepool=isolatedGroup \
-          --namespace default
+      - name: Terraform Init
+        run: |
+          cd challenge2
+          terraform init
 
+      - name: Terraform Plan
+        run: |
+          cd challenge2
+          terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        run: |
+          cd challenge2
+          terraform apply -auto-approve tfplan
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.12.1
+
+      - name: Deploy Helm Chart
+        run: |
+          helm upgrade --install ping-app ../challenge1/ping-0.1.0.tgz
+          
 #This workflow will do the following;
-# - Trigger on pushes to the main branch
-# - Set up the Google Cloud SDK
-# - Authenticate with GKE
-# - Set up Helm
-# - Deploy the "ping" Helm chart to the "isolatedGroup" node pool in the GKE cluster
+# - Trigger on pushes to the main branch.
+# - #Make sure you reference correctly environment variables for the GCP PROJECT_ID, GKE_CLUSTER, and GKE_ZONE variables.
+# - Sets up gcloud CLI.
+# - Authenticates with GKE. It gets the GKE cluster credentials to allow interaction with the cluster.
+# - Sets up Terraform, init plan and apply, our terraform configuration from /challenge2.
+# - Sets up Helm in order to be able to deploy helm chart from challenge1/ping-0.1.0.tgz.
+# - - - - - 
+# - NOTE: 
+#   - This workflow assumes that your GKE cluster already exists. 
+#   - Make sure to replace your-cluster-name and your-cluster-zone with your actual GKE cluster details. 
+#   - Also, ensure that you have the following secrets set up in your GitHub repository:
+#     - GCP_PROJECT_ID: Your Google Cloud project ID
+#     - GCP_SA_KEY: The service account key with necessary permissions to access GKE and deploy resources
 ```
