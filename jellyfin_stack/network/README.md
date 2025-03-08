@@ -35,14 +35,13 @@ ___
 > kubectl get pods -n ingress-nginx -l app.kubernetes.io/name=nginx-ingress -o jsonpath='{.items[0].metadata.name}' -o yaml | grep image:
 > ```
 
-> ![Note]
-> ```shell
-> # Key Parameters:
-> --version 2.0.1   #Specifies the Helm chart version (required for compatibility).
-> --set controller.image.tag=4.0.1   #Explicitly sets the NGINX Ingress Controller version.
-> --namespace ingress-nginx   #Deploys to a dedicated namespace.
-> --create-namespace   #Creates the namespace if it doesn’t exist.
-> ```
+> [!NOTE]
+> **#Key Parameters:** <br>
+> **--version 2.0.1**   #Specifies the Helm chart version (required for compatibility). <br>
+> **--set controller.image.tag=4.0.1**   #Explicitly sets the NGINX Ingress Controller version. <br>
+> **--namespace ingress-nginx**   #Deploys to a dedicated namespace. <br>
+> **--create-namespace**   #Creates the namespace if it doesn’t exist.
+
 
 
 
