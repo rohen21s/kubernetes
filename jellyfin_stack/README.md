@@ -1,11 +1,12 @@
 # MediaStreamingStack - Jellyfin 🛠️ 🇼🇮🇵
 ___
 
-> ### #1 Network setup
+> ### [1# Network Setup](./network)
 > - MetalLB
 > - NGINX Ingress Controller
+>
 > 
-> ### #2 Streaming stack
+> ### 2# Streaming stack 🛠️
 > 
-> ### #3 Downloading stack
+> ### 3# Downloading stack 🛠️
 > 
