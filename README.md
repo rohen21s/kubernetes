@@ -19,7 +19,10 @@
 >### 🎵 Discord Music Bot
 >Host "muse" Discord music bot on your own k8s server!<br>
 >**[Check out the Discord Music Bot](https://github.com/rohen21s/kubernetes/tree/main/dcm_bot)**
+><br>
 >
+>### 🎞️ MediaStreamingStack 🛠️ 🇼🇮🇵
+
 
 <br>
 <br>

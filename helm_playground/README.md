@@ -1,8 +1,8 @@
 ## DevOps Engineer Code Challenge
 
-### Code challenge for Devops Engineer in Telefonica Innovacion Digital. 
+### Code challenge for Devops Engineer. 
 
-- We’d like you to design and develop a playable demo to create and deploy a helm chart.
+- Design and develop a playable demo to create and deploy a helm chart.
 
 ### How do we evaluate the test?
 1. How clear your code is.
