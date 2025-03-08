@@ -51,6 +51,7 @@ initContainer:
     port: 80
 ```
 
+
 ___
 
 - #2 Modifications and content added on the `deployment.yaml` manifest file.
