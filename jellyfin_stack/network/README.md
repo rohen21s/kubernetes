@@ -13,7 +13,7 @@ Required to `lease` and `assign` IP addresses to `LoadBalancer` type of `svc` fr
 
 ```shell
 # Install MetalLB components.
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml 
 ```
 
 ```yaml
