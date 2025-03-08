@@ -67,7 +67,7 @@ Required to control the `access` and `path` to our services later using `DNS`.
 #copy paste all this in terminal
 #To install NGINX Ingress Controller version 4.0.1 using Helm, follow these steps:
 helm install nginx4-0-1 oci://ghcr.io/nginx/charts/nginx-ingress \
---version 2.0.1 \ 
+--version 2.0.1 \
 --namespace ingress-nginx \
 --create-namespace \
 --set controller.image.tag=4.0.1
