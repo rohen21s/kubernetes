@@ -45,7 +45,7 @@ spec:
 ```
 
 >[!Note]
-> You can check all the manifests for reference [here](github.com/rohen21s/kubernetes/tree/main/jellyfin_stack/network/metalb).
+> You can check all the manifests for reference [here](./metalb).
 
 ---
 ### NGINX Ingress-controller installation
