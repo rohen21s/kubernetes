@@ -1,11 +1,11 @@
 # MediaStreamingStack - Jellyfin 🛠️ 🇼🇮🇵
 ___
 
-
-
->
-> `kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml`
+> ### #1 Network setup
+> - MetalLB
+> - NGINX Ingress Controller
 > 
+> ### #2 Streaming stack
 > 
-<br>
-
+> ### #3 Downloading stack
+> 
