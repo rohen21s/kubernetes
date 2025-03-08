@@ -1,4 +1,4 @@
-# MediaStreamingStack - Jellyfin <WIP>
+# MediaStreamingStack - Jellyfin 🛠️ 🇼🇮🇵
 ___
 
 

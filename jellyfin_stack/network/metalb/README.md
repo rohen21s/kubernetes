@@ -1,4 +1,4 @@
-# MetalLB <WIP>
+# MetalLB
 ___
 
 >

@@ -1,4 +1,4 @@
-# Proxmox - NFSnas
+# Proxmox - NFSnas - k8s automated storage provisioner
 
 - Access to `proxmox node > disks`.
 - Attach the `new disk` to proxmox hardware, in my case is an external USB HD.

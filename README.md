@@ -6,7 +6,7 @@
 >**[Explore the Kubernetes Home Lab](https://github.com/rohen21s/kubernetes/tree/main/kube_config)**
 ><br>
 >
->### 💾 NFS Server Setup
+>### 💾 NFS Server - k8s automated storage provisioner
 >Build your own Network Attached Storage server using NFS.<br>
 >**[Discover more about nfs-kernel-server ](https://github.com/rohen21s/kubernetes/tree/main/nfsnas)**
 ><br>
