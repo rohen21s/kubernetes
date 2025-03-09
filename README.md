@@ -21,7 +21,8 @@
 >**[Check out the Discord Music Bot](https://github.com/rohen21s/kubernetes/tree/main/dcm_bot)**
 ><br>
 >
->### 🎞️ MediaStreamingStack 🛠️ 🇼🇮🇵
+>### 🎞️ MediaStreamingStack 🛠️
+>[**🇼🇮🇵**](https://github.com/rohen21s/kubernetes/tree/main/media_stack)
 
 
 <br>
