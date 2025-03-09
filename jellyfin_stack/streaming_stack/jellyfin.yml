@@ -1,0 +1,17 @@
+version: "3"
+services:
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Rome
+    volumes:
+      - ./jellyfin_config:/config
+      - /media/tvshows:/data/tvshows
+      - /media/movies:/data/movies
+      - /media/anime:/data/anime
+    ports:
+      - 8096:8096
+    restart: unless-stopped

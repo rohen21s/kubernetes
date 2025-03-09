@@ -5,8 +5,19 @@ ___
 > - MetalLB
 > - NGINX Ingress Controller
 >
+> ### 2# Consistent and well planned paths 🛠️
+> ```
+> https://wiki.servarr.com/docker-guide#consistent-and-well-planned-paths 
+> ```
+> ### 3# Streaming stack 🛠️
 > 
-> ### 2# Streaming stack 🛠️
+> - Jellyfin
+> - Jellyseerr
+> - Radarr
+> - Sonarr 
 > 
-> ### 3# Downloading stack 🛠️
+> ### 4# Downloading stack 🛠️
 > 
+> - Jackett
+> - Transmission
+> - Bazarr
