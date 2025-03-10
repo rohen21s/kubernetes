@@ -41,7 +41,7 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-    - 192.168.1.200-192.168.1.230
+    - 192.168.1.200-192.168.1.230 
 ```
 
 >[!Note]
