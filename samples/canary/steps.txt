@@ -1,0 +1,67 @@
+Canary Deployment Lab Demo: Step-by-Step
+
+Simple lab demo without requiring a full service mesh, we'll use a common trick: 
+Using two Services to simulate traffic splitting based on the number of pods assigned to each.
+
+1. Deploy a "Stable" (Blue) version of our application.
+
+    kubectl apply -f deployment-stable.yaml
+    kubectl apply -f service-app.yaml
+    stage: stable
+    replicas: 5
+
+2. Deploy a small "Canary" (Green) version.
+
+    kubectl apply -f deployment-canary.yaml
+    stage: canary
+    replicas: 1
+
+    kubectl get deployments -l app=my-app
+    kubectl get pods -l app=my-app
+    NAME            READY   UP-TO-DATE   AVAILABLE   AGE
+    my-app-canary   1/1     1            1           50s
+    my-app-stable   5/5     5            5           3m6s
+    NAME                             READY   STATUS    RESTARTS   AGE
+    my-app-canary-54676d8bc8-lk4pq   1/1     Running   0          50s
+    my-app-stable-654db78d7-kgp88    1/1     Running   0          3m6s
+    my-app-stable-654db78d7-r4jl7    1/1     Running   0          3m6s
+    my-app-stable-654db78d7-v5fww    1/1     Running   0          3m6s
+    my-app-stable-654db78d7-vbs4k    1/1     Running   0          3m6s
+    my-app-stable-654db78d7-zwb4g    1/1     Running   0          3m6s
+
+3. Gradually increase traffic to the Canary by scaling up its pods and/or adjusting service selectors.
+
+    kubectl scale deployment/my-app-canary --replicas=1
+    kubectl scale deployment/my-app-stable --replicas=6
+
+4. Eventually, promote Canary to become the new Stable.
+
+    kubectl scale deployment/my-app-canary --replicas=10
+    kubectl scale deployment/my-app-stable --replicas=0
+
+---
+# List all
+kubectl get pods -l app=my-app
+kubectl get deployments -l app=my-app
+kubectl get services -l app=my-app
+
+# Delete all
+kubectl delete deployment my-app-blue
+kubectl delete deployment my-app-green
+kubectl delete service my-app-service
+kubectl delete configmap my-app-blue-config
+kubectl delete configmap my-app-green-config
+
+# Loop Version check
+
+for i in {1..20}; do
+  echo -n "Attempt $i: "
+  curl -s http://34.7.135.143/ | grep -o 'v[0-9]\.[0-9]'
+  sleep 0.5
+done
+
+for i in {1..20}; do
+  echo -n "Attempt $i: "
+  curl -s http://34.13.183.52/ | grep 'Welcome to the'
+  sleep 0.5
+done

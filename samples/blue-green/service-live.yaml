@@ -1,0 +1,16 @@
+# service-live.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-service # This name will remain constant
+  labels:
+    app: my-app
+spec:
+  selector:
+    app: my-app
+    version: blue # Initially points to blue pods
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer # Use LoadBalancer for external access, or NodePort for Minikube/local

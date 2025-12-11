@@ -1,0 +1,18 @@
+# service-app-canary-stage1.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-service
+  labels:
+    app: my-app
+spec:
+  selector:
+    app: my-app
+    # Now selects BOTH stable and canary pods!
+    # Kubernetes will load balance across all pods matching these labels.
+    # We remove the 'stage: stable' from the selector directly
+    # and instead rely on the 'app: my-app' label, assuming all pods
+    # for this app should be eligible.
+    # For a more explicit partial split, we'd need to add 'stage: canary'
+    # but for this demo, making all 'my-app' pods eligible simplifies the example.
+    # ---

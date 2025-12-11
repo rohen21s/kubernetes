@@ -1,0 +1,66 @@
+# deployment-stable.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-stable
+  labels:
+    app: my-app
+    stage: stable # Unique stage label
+spec:
+  replicas: 2 # Start with a reasonable number for stable
+  selector:
+    matchLabels:
+      app: my-app
+      stage: stable
+  template:
+    metadata:
+      labels:
+        app: my-app
+        stage: stable
+    spec:
+      containers:
+      - name: my-app
+        image: nginx:1.21.6 # Blue/Stable Nginx
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        volumeMounts:
+        - name: html-content
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: html-content
+        configMap:
+          name: my-app-stable-config # Will create this below
+          items:
+          - key: index.html
+            path: index.html
+---
+# configmap-stable.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-app-stable-config
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>My Stable App</title>
+        <style>
+            body { font-family: Arial, sans-serif; background-color: #e0f2f7; color: #00008b; text-align: center; padding-top: 50px; }
+            h1 { color: #00008b; }
+            .version { font-size: 2em; font-weight: bold; margin-top: 20px; }
+        </style>
+    </head>
+    <body>
+        <h1>Welcome to the Stable Environment!</h1>
+        <div class="version">Version: BLUE (v1.0)</div>
+        <p>This is our production release.</p>
+        <p>Deployment timestamp: $(date)</p>
+    </body>
+    </html>

@@ -1,0 +1,39 @@
+Blue/Green Deployment Lab Demo: Step-by-Step
+
+# We'll use a simple web application (an Nginx server) to represent our "Blue" and "Green" versions. 
+# The key is how we manage the Kubernetes Service object to switch traffic.
+
+
+1. Deploy a "Blue" version of the application.
+
+    # Apply the Blue Deployment and ConfigMap
+    kubectl apply -f deployment-blue.yaml 
+
+    # Apply the Live Service
+    kubectl apply -f service-live.yaml
+
+2. Deploy a "Green" version of our application (without exposing it to live traffic initially).
+
+    # Apply the Green Deployment and ConfigMap
+    kubectl apply -f deployment-green.yaml
+
+3. Switch live traffic from Blue to Green.
+
+    # Switch live traffic selector version : blue
+
+4. Optionally, switch back to Blue (rollback).
+
+    # Switch live traffic selector version : green
+
+---
+# List all
+kubectl get pods -l app=my-app
+kubectl get deployments -l app=my-app
+kubectl get services -l app=my-app
+
+# Delete all
+kubectl delete deployment my-app-blue
+kubectl delete deployment my-app-green
+kubectl delete service my-app-service
+kubectl delete configmap my-app-blue-config
+kubectl delete configmap my-app-green-config

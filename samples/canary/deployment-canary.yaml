@@ -1,0 +1,65 @@
+# deployment-canary.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-canary
+  labels:
+    app: my-app
+    stage: canary # Unique stage label for canary
+spec:
+  replicas: 7 # Start with a single canary pod
+  selector:
+    matchLabels:
+      app: my-app
+      stage: canary
+  template:
+    metadata:
+      labels:
+        app: my-app
+        stage: canary
+    spec:
+      containers:
+      - name: my-app
+        image: nginx:1.23.3 # Green/Canary Nginx
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        volumeMounts:
+        - name: html-content
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: html-content
+        configMap:
+          name: my-app-canary-config # Will create this below
+          items:
+          - key: index.html
+            path: index.html
+---
+# configmap-canary.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-app-canary-config
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>My Canary App</title>
+        <style>
+            body { font-family: Arial, sans-serif; background-color: #e6ffe6; color: #006400; text-align: center; padding-top: 50px; }
+            h1 { color: #006400; }
+            .version { font-size: 2em; font-weight: bold; margin-top: 20px; }
+        </style>
+    </head>
+    <body>
+        <h1>Welcome to the Canary Environment!</h1>
+        <div class="version">Version: GREEN (v2.0)</div>
+        <p>This is a new feature being rolled out to a small percentage of users!</p>
+    </body>
+    </html>

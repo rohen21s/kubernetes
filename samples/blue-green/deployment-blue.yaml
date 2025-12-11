@@ -1,0 +1,73 @@
+# deployment-blue.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-blue
+  labels:
+    app: my-app
+    version: blue # Unique version label
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+      version: blue
+  template:
+    metadata:
+      labels:
+        app: my-app
+        version: blue
+    spec:
+      containers:
+      - name: my-app
+        image: nginx:1.21.6 # stable Nginx image
+        ports:
+        - containerPort: 80
+        readinessProbe: 
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        livenessProbe: 
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        # Mount a ConfigMap to show the version
+        volumeMounts:
+        - name: html-content
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: html-content
+        configMap:
+          name: my-app-blue-config # created below
+          items:
+          - key: index.html
+            path: index.html
+---
+# configmap-blue.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-app-blue-config
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>My Blue App</title>
+        <style>
+            body { font-family: Arial, sans-serif; background-color: #e0f2f7; color: #00008b; text-align: center; padding-top: 50px; }
+            h1 { color: #00008b; }
+            .version { font-size: 2em; font-weight: bold; margin-top: 20px; }
+            .message { font-size: 1.2em; margin-top: 30px; }
+        </style>
+    </head>
+    <body>
+        <h1>Welcome to the Blue Environment!</h1>
+        <div class="version">Version: BLUE (v1.0)</div>
+        <div class="message">This is our current production release.</div>
+    </body>
+    </html>

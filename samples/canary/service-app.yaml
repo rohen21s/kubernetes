@@ -1,0 +1,16 @@
+# service-app.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-service # The single service name
+  labels:
+    app: my-app
+spec:
+  selector:
+    app: my-app
+#    stage: stable # Initially targets stable pods
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer # Or NodePort for Minikube/local

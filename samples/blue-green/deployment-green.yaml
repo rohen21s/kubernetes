@@ -1,0 +1,72 @@
+# deployment-green.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-green
+  labels:
+    app: my-app
+    version: green # Unique version label
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+      version: green
+  template:
+    metadata:
+      labels:
+        app: my-app
+        version: green
+    spec:
+      containers:
+      - name: my-app
+        image: nginx:1.23.3 # slightly newer Nginx image for distinction
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        volumeMounts:
+        - name: html-content
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: html-content
+        configMap:
+          name: my-app-green-config # created below
+          items:
+          - key: index.html
+            path: index.html
+---
+# configmap-green.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-app-green-config
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>My Green App</title>
+        <style>
+            body { font-family: Arial, sans-serif; background-color: #e6ffe6; color: #006400; text-align: center; padding-top: 50px; }
+            h1 { color: #006400; }
+            .version { font-size: 2em; font-weight: bold; margin-top: 20px; }
+            .message { font-size: 1.2em; margin-top: 30px; }
+        </style>
+    </head>
+    <body>
+        <h1>Welcome to the Green Environment!</h1>
+        <div class="version">Version: GREEN (v2.0)</div>
+        <div class="message">This is our brand new release, ready for production!</div>
+    </body>
+    </html>
